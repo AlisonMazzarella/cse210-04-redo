@@ -108,3 +108,45 @@ class Director:
         actors = cast.get_all_actors()
         self._video_service.draw_actors(actors)
         self._video_service.flush_buffer()
+
+    def _make_new_rock(self):
+        x = random.randint(1, self._cols - 1)
+        y = 0
+        position = Point(x, y)
+        position = position.scale(self._cell_size)
+
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        color = Color(r, g, b)
+
+        velocity = Point(0, self._cell_size)
+
+        rock = Rock()
+        rock.set_text("o")
+        rock.set_font_size(self._font_size)
+        rock.set_color(color)
+        rock.set_position(position)
+        rock.set_velocity(velocity)
+        return rock
+
+    def _make_new_gem(self):
+        x = random.randint(1, self._cols - 1)
+        y = 0
+        position = Point(x, y)
+        position = position.scale(self._cell_size)
+
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        color = Color(r, g, b)
+
+        velocity = Point(0, self._cell_size)
+
+        gem = Gem()
+        gem.set_text("*")
+        gem.set_font_size(self._font_size)
+        gem.set_color(color)
+        gem.set_position(position)
+        gem.set_velocity(velocity)
+        return gem
