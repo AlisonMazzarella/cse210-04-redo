@@ -29,7 +29,6 @@ _Greed is played according to the following rules._
 _The project files and folders are organized as follows:_
 
 - +-- actor.py 
-- +-- artifact.py 
 - +-- cast.py 
 - +-- score.py 
 - +-- keyboard_service.py 
