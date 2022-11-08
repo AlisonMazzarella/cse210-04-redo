@@ -41,7 +41,8 @@ _The project files and folders are organized as follows:_
 
 **Required Technologies:**
 
-- Python 3.8.0 or greater
+- Python 3.8.
+- raylib
 
 ## **Authors: (Team E)**
 
