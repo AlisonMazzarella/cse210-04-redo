@@ -2,7 +2,6 @@ class Director:
     """A person who directs the game. 
     
     The responsibility of a Director is to control the sequence of play.
-
     Attributes:
         _keyboard_service (KeyboardService): For getting directional input.
         _video_service (VideoService): For providing video output.
@@ -17,10 +16,10 @@ class Director:
         """
         self._keyboard_service = keyboard_service
         self._video_service = video_service
+        self._total = 0
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
-
         Args:
             cast (Cast): The cast of actors.
         """
@@ -30,6 +29,7 @@ class Director:
             self._do_updates(cast)
             self._do_outputs(cast)
         self._video_service.close_window()
+
 
     def _get_inputs(self, cast):
         """Gets directional input from the keyboard and applies it to the robot.
@@ -50,16 +50,27 @@ class Director:
         banner = cast.get_first_actor("banners")
         robot = cast.get_first_actor("robots")
         artifacts = cast.get_actors("artifacts")
-
-        banner.set_text("")
+        
+        
+        banner.set_text(f'Score: {self._total}')
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         robot.move_next(max_x, max_y)
         
+        
+
         for artifact in artifacts:
             if robot.get_position().equals(artifact.get_position()):
-                message = artifact.get_message()
-                banner.set_text(message)    
+                ## Differentiate between rocks and gems to add or subtract points
+                if artifact.get_text() == '*':
+                    self._total = self._total + 1
+                    cast.remove_actor('artifacts', artifact)
+                    
+                else:
+                    self._total = self._total - 1
+                    cast.remove_actor('artifacts', artifact)
+                    
+            artifact.move_next(max_x, max_y)  
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
