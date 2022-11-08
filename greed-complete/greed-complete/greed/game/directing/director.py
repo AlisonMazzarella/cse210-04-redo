@@ -1,3 +1,10 @@
+import random 
+from game.shared.point import Point
+from game.shared.color import Color 
+from game.casting.actor import Actor
+from game.casting.gems import Gem
+from game.casting.rocks import Rock
+
 class Director:
     """A person who directs the game. 
     
@@ -49,28 +56,47 @@ class Director:
         """
         banner = cast.get_first_actor("banners")
         robot = cast.get_first_actor("robots")
-        artifacts = cast.get_actors("artifacts")
+        gems = cast.get_actors("gems")
+        rocks = cast.get_actors("rocks")
+
+        new_rocks = random.randint(-10, 2)
+        new_gems = random.randint(-10, 2)
+        if new_rocks < 0:
+            new_rocks = 0
+        if new_gems < 0:
+            new_gems = 0
+        for i in range(new_rocks):
+            rock = self._make_new_rock()
+            cast.add_actor("rocks", rock)
+        for i in range(new_gems):
+            gem = self._make_new_gem()
+            cast.add_actor("gems", gem)
         
-        
-        banner.set_text(f'Score: {self._total}')
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
         robot.move_next(max_x, max_y)
         
-        
+        for gem in gems:
+            gem.move_next(max_x, max_y)
+            if robot.get_position().equals(gem.get_position()):
+                score = gem.add_score(self._score)
+                self._score = score
+                cast.remove_actor("gems", gem)
+            position = gem.get_position()
+            if position.get_y() >= max_y:
+                cast.remove_actor("gems", gem)
 
-        for artifact in artifacts:
-            if robot.get_position().equals(artifact.get_position()):
-                ## Differentiate between rocks and gems to add or subtract points
-                if artifact.get_text() == '*':
-                    self._total = self._total + 1
-                    cast.remove_actor('artifacts', artifact)
-                    
-                else:
-                    self._total = self._total - 1
-                    cast.remove_actor('artifacts', artifact)
-                    
-            artifact.move_next(max_x, max_y)  
+        for rock in rocks:
+            rock.move_next(max_x, max_y)
+            if robot.get_position().equals(rock.get_position()):
+                score = rock.add_score(self._score)
+                self._score = score
+                cast.remove_actor("rocks", rock)
+            position = rock.get_position()
+            if position.get_y() >= max_y:
+                cast.remove_actor("rocks", rock)
+
+        banner.set_text(f"Score: {self._score}")
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
