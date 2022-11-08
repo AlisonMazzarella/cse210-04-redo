@@ -28,6 +28,7 @@ class Director:
         self._cell_size = self._video_service.get_cell_size()
         self._actor = Actor()
         self._font_size = self._actor.get_font_size()
+        self._score = 0
         
     def start_game(self, cast):
         """Starts the game using the given cast. Runs the main game loop.
@@ -83,8 +84,8 @@ class Director:
         for gem in gems:
             gem.move_next(max_x, max_y)
             if robot.get_position().equals(gem.get_position()):
-                # score = gem.add_score(self._score)
-                # self._score = score
+                score = gem.add_score(self._score)
+                self._score = score
                 cast.remove_actor("gems", gem)
             position = gem.get_position()
             if position.get_y() >= max_y:
@@ -93,14 +94,14 @@ class Director:
         for rock in rocks:
             rock.move_next(max_x, max_y)
             if robot.get_position().equals(rock.get_position()):
-                # score = rock.add_score(self._score)
-                # self._score = score
+                score = rock.add_score(self._score)
+                self._score = score
                 cast.remove_actor("rocks", rock)
             position = rock.get_position()
             if position.get_y() >= max_y:
                 cast.remove_actor("rocks", rock)
 
-        # banner.set_text(f"Score: {self._score}")
+        banner.set_text(f"Score: {self._score}")
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
