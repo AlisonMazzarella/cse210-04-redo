@@ -30,14 +30,13 @@ _The project files and folders are organized as follows:_
 
 - +-- actor.py 
 - +-- cast.py 
-- +-- score.py 
+- +-- gems.py
+- +-- rocks.py
 - +-- keyboard_service.py 
 - +-- video_service.py 
 - +-- color.py 
 - +-- point.py 
 - +-- director.py 
-- +-- rock.py 
-- +-- gem.py 
 - +-- README.md 
 
 **Required Technologies:**
